@@ -11,6 +11,8 @@ flask-cors = "*"
 flask-heroku = "*"
 pymongo = "*"
 gunicorn = "*"
+dnspython = "*"
+python-dotenv = "*"
 
 [requires]
 python_version = "3.7"
