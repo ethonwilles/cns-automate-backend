@@ -23,35 +23,52 @@ def get():
     
     return "working"
 
-@app.route("/service-tracker", methods=["POST"])
+@app.route("/service-tracker", methods=["GET","POST"])
 def service():
     mydb = myclient["mydb"]
     service = mydb["service"]
 
-    new_num = request.json["num"]
-    old_num = service.find()
-    query = {}
-    for item in old_num:
-        query["num"] = item["num"]
     
-    service.update_one(query, {"$set": {"num" : new_num}})
+    if request.method == "POST":
 
-    return "worked"
+        new_num = request.json["num"]
+        old_num = service.find()
+        query = {}
+        for item in old_num:
+            query["num"] = item["num"]
+        
+        service.update_one(query, {"$set": {"num" : new_num}})
 
-@app.route("/invoice-tracker", methods=["POST"])
+        return "worked"
+    elif request.method == "GET":
+        old_num = service.find()
+        query = {}
+        for item in old_num:
+            query["num"] = item["num"]
+        return query
+
+@app.route("/invoice-tracker", methods=["GET","POST"])
 def invoice():
     mydb = myclient["mydb"]
     invoice = mydb["invoice"]
 
-    new_num = request.json["num"]
-    old_num = invoice.find()
-    query = {}
-    for item in old_num:
-        query["num"] = item["num"]
 
-    invoice.update_one(query, {"$set": {"num" : new_num}})
+    if request.method == "POST":
+        new_num = request.json["num"]
+        old_num = invoice.find()
+        query = {}
+        for item in old_num:
+            query["num"] = item["num"]
 
-    return f"{query}"
+        invoice.update_one(query, {"$set": {"num" : new_num}})
+
+        return "worked"
+    elif request.method == "GET":
+        old_num = invoice.find()
+        query = {}
+        for item in old_num:
+            query["num"] = item["num"]
+        return query
 
 
 if __name__ == "__main__":
