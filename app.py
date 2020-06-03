@@ -34,7 +34,7 @@ def service():
     for item in old_num:
         query["num"] = item["num"]
     
-    service.update_one({"num" : 0}, {"$set": {"num" : new_num}})
+    service.update_one(query, {"$set": {"num" : new_num}})
 
     return "worked"
 
