@@ -6,9 +6,11 @@ import json
 import os
 from dotenv import load_dotenv
 
+
 load_dotenv()
 password = os.getenv("PASS")
 app = Flask(__name__)
+CORS(app)
 heroku = Heroku(app)
 
 myclient = pymongo.MongoClient(f"mongodb+srv://admin:{password}@cluster0-rexpr.mongodb.net/test?retryWrites=true&w=majority")
@@ -70,6 +72,24 @@ def invoice():
             query["num"] = item["num"]
         return query
 
+
+
+@app.route("/todo-check" , methods=["GET", "POST"])
+def todo_check():
+    todo = mydb["ToDo"]
+
+    if request.method == "POST":
+        task = request.json["task"]
+        complete = request.json["completed"]
+        insert = todo.insert_one({"todo" :{ "task" : task, "completed" : complete}})
+        return f"{insert}"
+
+    if request.method == "GET":
+        items = todo.find()
+        list_of = []
+        for item in items:
+            list_of.append(item["todo"])
+        return {"items" : list_of}
 
 if __name__ == "__main__":
     app.run(debug=True)
