@@ -74,7 +74,7 @@ def invoice():
 
 
 
-@app.route("/todo-check" , methods=["GET", "POST"])
+@app.route("/todo-check" , methods=["GET", "POST", "PUT"])
 def todo_check():
     todo = mydb["ToDo"]
 
@@ -90,6 +90,13 @@ def todo_check():
         for item in items:
             list_of.append(item["todo"])
         return {"items" : list_of}
+    if request.method == "PUT":
+        task = request.json["task"]
+        complete = request.json["completed"]
+        myquery = {"todo" : {"task" : task , "completed" : False}}
+        new_values = {"$set" :{ "todo": {"task": task,"completed" : True}}}
+        todo.update_one(myquery, new_values)
+        return "worked"
 
 if __name__ == "__main__":
     app.run(debug=True)
