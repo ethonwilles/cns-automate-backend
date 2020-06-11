@@ -81,7 +81,8 @@ def todo_check():
     if request.method == "POST":
         task = request.json["task"]
         complete = request.json["completed"]
-        insert = todo.insert_one({"todo" :{ "task" : task, "completed" : complete}})
+        date = request.json["date"]
+        insert = todo.insert_one({"todo" :{"completed" : complete, "task" : task, "date" : date}})
         return f"{insert}"
 
     if request.method == "GET":
