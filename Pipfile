@@ -13,6 +13,7 @@ pymongo = "*"
 gunicorn = "*"
 dnspython = "*"
 python-dotenv = "*"
+twilio = "*"
 
 [requires]
 python_version = "3.7"

@@ -5,6 +5,7 @@ import pymongo
 import json
 import os
 from dotenv import load_dotenv
+from twilio.rest import Client
 
 
 load_dotenv()
@@ -98,7 +99,14 @@ def todo_check():
         myquery = {"todo" : {"completed" : False, "task" : task, "date" : date}}
         new_values = {"$set" :{ "todo": {"completed" : True, "task" : task, "date" : date}}}
         todo.update_one(myquery, new_values)
-        return "worked"
+
+        client = Client(os.getenv("account_sid"), os.getenv("twilio_auth"))
+        message = client.messages.create(
+            to="+18016912737",
+            from_="+12058574417",
+            body="this is a test message from cns api"
+        )
+        return f"worked, message sid: {message.sid}"
 
 if __name__ == "__main__":
     app.run(debug=True)
