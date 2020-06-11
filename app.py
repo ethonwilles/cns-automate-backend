@@ -93,8 +93,9 @@ def todo_check():
     if request.method == "PUT":
         task = request.json["task"]
         complete = request.json["completed"]
-        myquery = {"todo" : {"task" : task , "completed" : False}}
-        new_values = {"$set" :{ "todo": {"task": task,"completed" : True}}}
+        date = request.json["date"]
+        myquery = {"todo" : {"task" : task , "completed" : False, "date" : date}}
+        new_values = {"$set" :{ "todo": {"task": task,"completed" : True, "date" : date}}}
         todo.update_one(myquery, new_values)
         return "worked"
 
