@@ -103,7 +103,7 @@ def todo_check():
         client = Client(os.getenv("account_sid"), os.getenv("twilio_auth"))
         message = client.messages.create(
             to="+18016912737",
-            from_="+12058574417",
+            from_=f"{os.getenv('number')}",
             body="this is a test message from cns api"
         )
         return f"worked, message sid: {message.sid}"
