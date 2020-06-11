@@ -104,7 +104,7 @@ def todo_check():
         message = client.messages.create(
             to="+18016912737",
             from_=f"{os.getenv('number')}",
-            body="this is a test message from cns api"
+            body=f"Task '{task}' was marked as completed today."
         )
         return f"worked, message sid: {message.sid}"
 
