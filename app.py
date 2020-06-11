@@ -94,8 +94,8 @@ def todo_check():
         task = request.json["task"]
         complete = request.json["completed"]
         date = request.json["date"]
-        myquery = {"todo" : {"task" : task , "completed" : False, "date" : date}}
-        new_values = {"$set" :{ "todo": {"task": task,"completed" : True, "date" : date}}}
+        myquery = {"todo" : {"completed" : False, "task" : task, "date" : date}}
+        new_values = {"$set" :{ "todo": {"completed" : True, "task" : task, "date" : date}}}
         todo.update_one(myquery, new_values)
         return "worked"
 
