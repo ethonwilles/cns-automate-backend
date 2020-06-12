@@ -75,7 +75,7 @@ def invoice():
 
 
 
-@app.route("/todo-check" , methods=["GET", "POST", "PUT"])
+@app.route("/todo-check" , methods=["GET", "POST", "PUT", "DELETE"])
 def todo_check():
     todo = mydb["ToDo"]
 
@@ -107,6 +107,13 @@ def todo_check():
             body=f"Task '{task}' was marked as completed today."
         )
         return f"worked, message sid: {message.sid}"
+    if request.method == "DELETE":
+        task = request.json["task"]
+        complete = request.json["completed"]
+        date = request.json["date"]
+        myquery = {"todo" : {"completed" : complete, "task" : task, "date" : date}}
 
+        todo.delete_one(myquery)
+        return "worked"
 if __name__ == "__main__":
     app.run(debug=True)
