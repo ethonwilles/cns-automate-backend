@@ -102,7 +102,7 @@ def todo_check():
 
         client = Client(os.getenv("account_sid"), os.getenv("twilio_auth"))
         message = client.messages.create(
-            to="+18016912737",
+            to="+18017068523",
             from_=f"{os.getenv('number')}",
             body=f"Task '{task}' was marked as completed today."
         )
