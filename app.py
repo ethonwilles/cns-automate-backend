@@ -99,7 +99,12 @@ def todo_check():
         myquery = {"todo" : {"completed" : False, "task" : task, "date" : date}}
         new_values = {"$set" :{ "todo": {"completed" : True, "task" : task, "date" : date}}}
         todo.update_one(myquery, new_values)
-
+        client = Client(os.getenv("account_sid"), os.getenv("twilio_auth"))
+        message = client.messages.create(
+            to="+18016912737",
+            from_=f"{os.getenv('number')}",
+            body=f"Task: '{task}' was marked as completed today."
+        )
         
         return f"worked"
     if request.method == "DELETE":
