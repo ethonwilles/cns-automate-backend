@@ -100,13 +100,8 @@ def todo_check():
         new_values = {"$set" :{ "todo": {"completed" : True, "task" : task, "date" : date}}}
         todo.update_one(myquery, new_values)
 
-        client = Client(os.getenv("account_sid"), os.getenv("twilio_auth"))
-        message = client.messages.create(
-            to="+18017068523",
-            from_=f"{os.getenv('number')}",
-            body=f"Task '{task}' was marked as completed today."
-        )
-        return f"worked, message sid: {message.sid}"
+        
+        return f"worked"
     if request.method == "DELETE":
         task = request.json["task"]
         complete = request.json["completed"]
@@ -115,5 +110,16 @@ def todo_check():
 
         todo.delete_one(myquery)
         return "worked"
+
+@app.route("/test", methods=["POST"])
+def test():
+        client = Client(os.getenv("account_sid"), os.getenv("twilio_auth"))
+        message = client.messages.create(
+            to="+18016912737",
+            from_=f"{os.getenv('number')}",
+            media_url=["http://www.mediafire.com/view/ulma4kzrpoimphh/IMG_2176.JPG"],
+            body=f"Task  was marked as completed today."
+        )
+        return f"worked, message sid: {message.sid}"
 if __name__ == "__main__":
     app.run(debug=True)
