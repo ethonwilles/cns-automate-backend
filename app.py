@@ -75,7 +75,7 @@ def invoice():
 
 
 
-@app.route("/todo-check" , methods=["GET", "POST", "PUT", "DELETE"])
+@app.route("/todo-check" , methods=["GET", "POST", "PUT", "DELETE", "PATCH"])
 def todo_check():
     todo = mydb["ToDo"]
 
@@ -107,6 +107,8 @@ def todo_check():
         )
         
         return f"worked"
+    
+        
     if request.method == "DELETE":
         task = request.json["task"]
         complete = request.json["completed"]
@@ -115,6 +117,18 @@ def todo_check():
 
         todo.delete_one(myquery)
         return "worked"
+    
+@app.route("/push-todo", methods=["POST"])
+def push():
+    todo = mydb["ToDo"]
+    task = request.json["task"]
+    complete = request.json["completed"]
+    old_date = request.json["old_date"]
+    new_date = request.json["new_date"]
+    myquery = {"todo" : {"completed" : complete, "task" : task, "date" : old_date}}
+    new_values = {"$set" :{ "todo": {"completed" : complete, "task" : task, "date" : new_date}}}
+    todo.update_one(myquery, new_values)
+    return "worked"
 
 @app.route("/test", methods=["POST"])
 def test():
