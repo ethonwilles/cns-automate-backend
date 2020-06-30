@@ -130,15 +130,30 @@ def push():
     todo.update_one(myquery, new_values)
     return "worked"
 
-@app.route("/test", methods=["POST"])
-def test():
-        client = Client(os.getenv("account_sid"), os.getenv("twilio_auth"))
-        message = client.messages.create(
-            to="+18016912737",
-            from_=f"{os.getenv('number')}",
-            media_url=["http://www.mediafire.com/view/ulma4kzrpoimphh/IMG_2176.JPG"],
-            body=f"Task  was marked as completed today."
-        )
-        return f"worked, message sid: {message.sid}"
+@app.route("/hours", methods=["GET", "POST", "PUT"])
+def hours():
+    hoursdb = myclient["Hours"]
+    employee = request.json["employee"]
+    if request.method == "GET":
+        user = hoursdb[employee]
+        data = {}
+        items = user.find()
+        for item in items:
+            print(item)
+            data["date"] = item['date']
+            data["hours"] = item['hours']
+        return data
+    if request.method == "POST":
+        user = hoursdb[employee]
+        date = request.json["date"]
+        hours = request.json["hours"]
+        query = {"date" : date, "hours" : hours}
+        user.insert_one(query)
+        items = user.find({"date" : date, "hours" : hours})
+        data = {}
+        for item in items:
+            data["date"] = item["date"]
+            data["hours"] = item["hours"]
+        return data
 if __name__ == "__main__":
     app.run(debug=True)
