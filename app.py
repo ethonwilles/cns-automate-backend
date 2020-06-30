@@ -155,5 +155,11 @@ def hours():
             data["date"] = item["date"]
             data["hours"] = item["hours"]
         return data
+@app.route("/fetch-hours", methods=["GET"])
+def fetch_hours():
+    hoursdb = myclient["Hours"]
+    items = hoursdb.list_collection_names()
+    
+    return {"names" : items}
 if __name__ == "__main__":
     app.run(debug=True)
