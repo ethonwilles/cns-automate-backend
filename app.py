@@ -130,11 +130,11 @@ def push():
     todo.update_one(myquery, new_values)
     return "worked"
 
-@app.route("/hours", methods=["GET", "POST", "PUT"])
+@app.route("/hours", methods=["GET", "POST", "PUT", "PATCH"])
 def hours():
     hoursdb = myclient["Hours"]
     employee = request.json["employee"]
-    if request.method == "GET":
+    if request.method == "PATCH":
         user = hoursdb[employee]
         data = []
         temp_data = {}
