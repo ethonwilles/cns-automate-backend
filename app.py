@@ -8,6 +8,7 @@ from dotenv import load_dotenv
 from twilio.rest import Client
 
 
+
 load_dotenv()
 password = os.getenv("PASS")
 app = Flask(__name__)
@@ -18,7 +19,6 @@ myclient = pymongo.MongoClient(f"mongodb+srv://admin:{password}@cluster0-rexpr.m
 mydb = myclient["mydb"]
 service = mydb["service"]
 invoice = mydb["invoice"]
-
 
 
 @app.route("/", methods=["GET"])
@@ -136,13 +136,14 @@ def hours():
     employee = request.json["employee"]
     if request.method == "GET":
         user = hoursdb[employee]
-        data = {}
+        data = []
+        temp_data = {}
         items = user.find()
         for item in items:
-            print(item)
-            data["date"] = item['date']
-            data["hours"] = item['hours']
-        return data
+            temp_data["date"] = item["date"]
+            temp_data["hours"] = item["hours"]
+            data.append(temp_data)
+        return {"items" : data}
     if request.method == "POST":
         user = hoursdb[employee]
         date = request.json["date"]
@@ -162,4 +163,4 @@ def fetch_hours():
     
     return {"names" : items}
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True, port=6000)
